@@ -1,6 +1,6 @@
 
 
-		      What's New In Version 2.3?
+		      What's New In Version 2.3.x?
 
  . The C and Tcl versions of Evaluate Parameters have been removed from this
    special CPAN distribution.  One difference in this Perl version is that it
@@ -26,9 +26,9 @@
 
  . The vestigial Perl 4 package evap.pl has been removed.
 
-Stephen O. Lidie, Lehigh University Computing Center, 97/01/12
+Stephen O. Lidie, Lehigh University Computing Center, 98/01/14
 
-lusol@Lehigh.EDU
+Stephen.O.Lidie@Lehigh.EDU
 
 Here's the Announce file from the complete distribution:
 
