@@ -1,8 +1,8 @@
-$Getopt::EvaP::VERSION |= '2.3.4';
+$Getopt::EvaP::VERSION |= '2.3.5';
 
 package Getopt::EvaP; 
 
-# EvaP.pm - Evaluate Parameters 2.3.4 for Perl (the getopt et.al. replacement)
+# EvaP.pm - Evaluate Parameters 2.3.5 for Perl (the getopt et.al. replacement)
 #
 # Stephen.O.Lidie@Lehigh.EDU, 94/10/28
 #
@@ -407,7 +407,8 @@ sub evap_fin {
 	    $do_page =~ tr/a-z/A-Z/;
 	    $pager = '>-' if $do_page =~ /$pdt_reg_exp3/;
 	}
-	open PAGER, "$pager";
+	$pager = '>-' if $^O eq 'MacOS';
+	open(PAGER, "$pager") or warn "'$pager' open failed:  $!";
 	
 	print PAGER "Command Source:  $0\n\n\n\n" if $full_help;
 
@@ -1326,7 +1327,7 @@ Stephen.O.Lidie@Lehigh.EDU
      programs.  Primarily for users of EvaP(), can be used by other codes
      as well.
 
- Stephen.O.Lidie@Lehigh.EDU 99/04/03 (PDT version 2.0)  Version 2.3.4
+ Stephen.O.Lidie@Lehigh.EDU 99/04/03 (PDT version 2.0)  Version 2.3.5
    . Update Makefile.PL for ActiveState, fix a -w message found by 5.005_03.
 
 =head1 COPYRIGHT

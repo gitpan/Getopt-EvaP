@@ -38,11 +38,15 @@ Here's a sample PDT:
  . Update for Perl 5.005 and Perl/Tk 800.008.
        
 
-			What's New In Version 2.3.4?
+			What's New In Version 2.3.5?
 
- . Update for Perl 5.005_03 and Perl/Tk 800.013.
+ . Update for Perl 5.005_03 and Perl/Tk 800.013.  Fix a pager problem on
+   MacOS.  Note:  test #23 has been known to fail on Win32 systems due to
+   tab stop differences - this is not an error, per se, but, hey, what can
+   I say?  This is really version 2.3.4, but that 1 line MacOS pager fix
+   forced me to update the version number.  CPAN is watching after us!
 
-Steve Lidie, Lehigh University Computing Center, 99/04/03.
+Steve Lidie, Lehigh University Computing Center, 99/04/08.
 
 Stephen.O.Lidie@Lehigh.EDU
 

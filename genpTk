@@ -29,7 +29,7 @@ sub process_command_line_widget;
 
 $genPerlTk_aux_files = "$Config{installsitelib}/Getopt"; # other files
 chop($genPerlTk_date = `date`);	# creation date
-$genPerlTk_version = '2.3.4';	# version (same as Evaluate Parameters)
+$genPerlTk_version = '2.3.5';	# version (same as Evaluate Parameters)
 
 sub evap_PDT_error {
 
