@@ -1,39 +1,65 @@
 
 
-		      What's New In Version 2.3.x?
+			What is Evaluate Parameters?
+
+Briefly, EvaP() is a table driven command line argument processor that type
+checks values and provides up to three levels of online help on the comamnd
+and its parameters.  You provide the Parameter Description Table (PDT), and,
+optionally, a help Message Module (MM), and call EvaP() with pointers to this
+information, and get in return an option hash with command line values indexed
+by argument name.  When users request help, EvaP() uses the PDT and MM to
+present the help data and exits, all automatically.
+
+EvaP() allows for parameter aliases, defaults values, environment variables,
+and handles these types:
+
+   switch, string, real, integer, boolean, file, key, application, name
+
+Here's a sample PDT:
+
+   PDT my_program
+       date, d: string = `date`
+       list, l: file = stdout
+       color_space, cs: key rgb, cmy, hsb, keyend = $D_CS, rgb
+       scale_factor, sf: real = 1.0
+       debug, d: boolena = true
+   PDTEND optional_file_list
+       
+
+			What's New In Version 2.3.3?
 
  . The C and Tcl versions of Evaluate Parameters have been removed from this
-   special CPAN distribution.  One difference in this Perl version is that it
-   is not embeddable - to do that you need to fetch and install the complete
-   distribution, as described at the end of this file.  Also, the special
-   program `generate_man_page' is unavailable, as is `generate_PerlTk_program',
-   a new program that writes Perl/Tk code so you can wrap your evap-compliant
-   application in a Perl/Tk GUI wrapper. 
+   special CPAN distribution, so many auxiliary features and program are not
+   available, nor is EvaP() embeddable.  Nevertheless, `genpTk' is available,
+   a program that writes Perl/Tk code so you can wrap your EvaP() compliant
+   application in a Perl/Tk GUI wrapper.  And with luck, it'll work for your
+   programs that don't use EvaP() as well.
 
- . Update for Perl 5.003 and Perl/Tk 400.200, and fix several small bugs.
+ . Update for Perl 5.005 and Perl/Tk 800.008.
 
- . -help alias changed from -? back to -h since some shells treat the ?
-   as a wildcard character.  This may introduce a duplicate alias if you
-   already use "h".
-
- . EvaP.pm, has been moved into the Getopt hierarchy, so it's now included in
-   your code like this:  
-
-     use Getopt::EvaP;
-
- . For evap/Perl you can specify where to store option values, rather
-   than globals in the program's namespace.
-
- . The vestigial Perl 4 package evap.pl has been removed.
-
-Stephen O. Lidie, Lehigh University Computing Center, 98/01/14
+Steve Lidie, Lehigh University Computing Center, 98/07/25.
 
 Stephen.O.Lidie@Lehigh.EDU
+
+
+				Installation
+
+perl Makefile.PL
+make
+make test
+make install (as root)
+
+
+				    Usage
+
+ . perldoc Getopt::EvaP
+ . genpTk -full_help
+
 
 Here's the Announce file from the complete distribution:
 
 
-	     Evaluate Parameters 2.3 for C, Perl and Tcl
+		 Evaluate Parameters 2.3 for C, Perl and Tcl
 
 
     Evaluate Parameters, designed as a replacement for the getopt family of
@@ -150,7 +176,7 @@ Perl and Tcl programs:
    your C, Perl and Tcl programs.
 
 
-                               Availability
+				Availability
 
 All the implementations of Evaluate Parameters are available via anonymous FTP
 from ftp.Lehigh.EDU (128.180.1.4).  Look in the pub/evap/evap-2.x directory

@@ -1,19 +1,9 @@
-#!/usr/local/bin/perl -w
-#
-# evap - essentially identical to the C version of sample!
+#!./perl
 
 use Getopt::EvaP;		# Evaluate Parameters
+use subs qw/exit/;
 
-print <<'END';
-
-NOTE:  "make test" has passed if it fails with this message:
-
-Parameter millisecond_update_interval is required but was omitted.
-Type test.pl -h for command line parameter information.
-
-Now running the test....
-
-END
+sub exit {} # override builtin to check command line processing errors
 
 @PDT = split /\n/, <<'end-of-PDT';
 PDT sample
@@ -93,18 +83,110 @@ sample
 	'list of'.
 end-of-MM
 
-EvaP \@PDT, \@MM, \%OPT;		# evaluate parameters
+push @ARGV, qw/-mui 123/;     # fake a command line
+EvaP \@PDT, \@MM, \%OPT;      # evaluate parameters
 
-print "\nProgram name:\n  $OPT{help}\n\n";
 
-print "verbose = $OPT{verbose}\n" if defined $OPT{verbose};
-print "command = \"$OPT{command}\"\n";
-print "scale_factor  = $OPT{scale_factor}\n";
-print "millisecond_update_interval = $OPT{millisecond_update_interval}\n";
-print "ignore_output_file_column_one = $OPT{ignore_output_file_column_one}\n";
-print "output = $OPT{output}\n";
-print "queue = $OPT{queue}\n";
-print "destination = $OPT{destination}\n";
-print "'list of' tty = \"", join('", "', @{$OPT{tty}}), "\"\n";
+select(STDERR); $| = 1;     # make unbuffered
+select(STDOUT); $| = 1;     # make unbuffered
+print "1..23\n";
 
-print "\nFile names:\n  ", join(' ', @ARGV), "\n" if @ARGV;
+# Exercise PDT defaults.
+
+print $0 eq $OPT{help} ? "ok1\n" : "not ok1\n";
+print !defined($OPT{verbose}) ? "ok2\n" : "not ok2\n";
+print $OPT{command} eq 'ps -el' ? "ok3\n" : "not ok3\n";
+print $OPT{scale_factor} ==  1.2340896e-1 ? "ok4\n" : "not ok4\n";
+print $OPT{millisecond_update_interval} == 123 ? "ok5\n" : "not ok5\n";
+print $OPT{ignore_output_file_column_one} ? "ok6\n" : "not ok6\n";
+print $OPT{output} eq '>-' ? "ok7\n" : "not ok7";
+print $OPT{queue} eq 'printer' ? "ok8\n" : "not ok8\n";
+my $hn = `hostname`; chomp $hn;
+print $OPT{destination} eq $hn ? "ok9\n" : "not ok9\n";
+print join(",", @{$OPT{tty}}) eq "/dev/console,/dev/tty0,/dev/tty1" ?
+    "ok10\n" : "not ok10\n";
+print $#ARGV == -1 ? "ok11\n" : "not ok11\n";
+
+# Exercise command line overrides.  Pretend we're embedding to allow
+# successive calls to EvaP.
+
+$Getopt::EvaP::evap_embed = 1;
+@ARGV = qw/-v -c Frog -sf -2.5 -mui 123 -iofco 0 -o toad.lst -q plotter
+    -destination Pandora.CC.Lehigh.EDU -tty tty1 -tty com2 -tty ptty0 a b c/;
+EvaP \@PDT, \@MM;      # evaluate parameters
+
+print defined($Options{verbose}) ? "ok12\n" : "not ok12\n";
+print $Options{command} eq 'Frog' ? "ok13\n" : "not ok13\n";
+print $Options{scale_factor} ==  -2.5 ? "ok14\n" : "not ok14\n";
+print $opt_millisecond_update_interval == 123 ? "ok15\n" : "not ok15\n";
+print not $options{ignore_output_file_column_one} ? "ok16\n" : 	"not ok16\n";
+print $options{output} eq 'toad.lst' ? "ok17\n" : "not ok17";
+print $opt_queue eq 'plotter' ? "ok18\n" : "not ok18\n";
+print $opt_destination eq 'Pandora.CC.Lehigh.EDU' ? "ok19\n" : 	"not ok19\n";
+print join(",", @opt_tty) eq "tty1,com2,ptty0" ? "ok20\n" : "not ok20\n";
+print $#ARGV == 2 ? "ok21\n" : "not ok21\n";
+
+# Exercise type checking and help stuff.
+ 
+open(OLDOUT, ">&STDOUT") or die $!;
+open(OLDERR, ">&STDERR") or die $!;
+open(STDERR, '>test.err') or die $!;
+open(STDOUT, '>test.out') or die $!;
+@ARGV = qw/-sf not-a-float -mui 1bc -iofco 2 -q no-queue -unknown -comm/;
+EvaP \@PDT, \@MM;      # evaluate parameters
+@ARGV = (qw/-sf 1 -usage_help/);
+EvaP \@PDT, \@MM;      # evaluate parameters
+@ARGV = (qw/-sf 1 -help/);
+EvaP \@PDT, \@MM;      # evaluate parameters
+@ARGV = (qw/-sf 1 -full_help/);
+EvaP \@PDT, \@MM;      # evaluate parameters
+close STDERR;
+close STDOUT;
+
+open(STDOUT, ">&OLDOUT");
+open(STDERR, ">&OLDERR");
+
+@test = ();
+@good = ();
+open(T, 'test.err') or die $!;
+open(G, 'test.err.good') or die $!;
+@test = <T>;
+@good = <G>;
+close T;
+close G;
+print @test eq @good ? "ok22\n" : "not ok 22\n";
+
+@test = ();
+@good = ();
+open(T, 'test.out') or die $!;
+open(G, 'test.out.good') or die $!;
+@test = <T>;
+@good = <G>;
+close T;
+close G;
+print @test eq @good ? "ok23\n" : "not ok 23\n";
+__END__
+use Getopt::EvaP;		# Evaluate Parameters
+use subs qw/exit/;
+
+sub exit {} # override builtin to check command line processing errors
+
+@PDT = split /\n/, <<'end-of-PDT';
+PDT sample
+  set, s: list of 2 real = (123,456)
+  tet, t:  1 strings = ("555", "777")
+PDTEND optional_file_list
+end-of-PDT
+
+@MM = split /\n/, <<'end-of-MM';
+sample
+
+	A sample program demonstrating typical Evaluate Parameters
+	usage.
+end-of-MM
+
+@ARGV=(qw/-h -s 1 2 3/);
+EvaP \@PDT, \@MM;
+
+print "set=", join(',', @opt_set), "!\n";
+__END__
