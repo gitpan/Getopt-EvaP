@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl5 -w
 #
-#  This Perl/Tk X11 GUI wrapper for program `woevap' created by version 2.3.3
+#  This Perl/Tk X11 GUI wrapper for program `woevap' created by version 2.3.4
 #  of generate_PerlTk_program.
 #
 #  Wed Jul 29 20:28:35 EDT 1998
@@ -542,7 +542,7 @@ $mbh->pack(-side => 'left');
 
 my $about = $genPerlTk_mw->Dialog(
     -title  => 'About',
-    -text   => "This Perl/Tk X11 GUI wrapper for program `woevap' created by version 2.3.3 of generate_PerlTk_program.\n\nWed Jul 29 20:28:35 EDT 1998\n\nStephen.O.Lidie\@Lehigh.EDU",
+    -text   => "This Perl/Tk X11 GUI wrapper for program `woevap' created by version 2.3.4 of generate_PerlTk_program.\n\nWed Jul 29 20:28:35 EDT 1998\n\nStephen.O.Lidie\@Lehigh.EDU",
 #    -bitmap => "\@${genPerlTk_aux_files}/SOL.xbm",
      -wraplength => '4i',
 );
@@ -554,7 +554,7 @@ $mbh->command(
 $mbh->command(
     -label     => 'Usage', 
     -underline => 0, 
-    -command   => [\&display_usage, '2.3.3'],
+    -command   => [\&display_usage, '2.3.4'],
 );
 
 # Full command help from Evaluate Parameters Message Module.

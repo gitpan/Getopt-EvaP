@@ -36,8 +36,13 @@ Here's a sample PDT:
    programs that don't use EvaP() as well.
 
  . Update for Perl 5.005 and Perl/Tk 800.008.
+       
 
-Steve Lidie, Lehigh University Computing Center, 98/07/25.
+			What's New In Version 2.3.4?
+
+ . Update for Perl 5.005_03 and Perl/Tk 800.013.
+
+Steve Lidie, Lehigh University Computing Center, 99/04/03.
 
 Stephen.O.Lidie@Lehigh.EDU
 

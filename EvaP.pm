@@ -1,8 +1,8 @@
-$Getopt::EvaP::VERSION |= '2.3.3';
+$Getopt::EvaP::VERSION |= '2.3.4';
 
 package Getopt::EvaP; 
 
-# EvaP.pm - Evaluate Parameters 2.3.3 for Perl (the getopt et.al. replacement)
+# EvaP.pm - Evaluate Parameters 2.3.4 for Perl (the getopt et.al. replacement)
 #
 # Stephen.O.Lidie@Lehigh.EDU, 94/10/28
 #
@@ -16,7 +16,7 @@ package Getopt::EvaP;
 #
 # Stephen O. Lidie, Lehigh University Computing Center.
 #
-# Copyright (C) 1993 - 1998 by Stephen O. Lidie.  All rights reserved.
+# Copyright (C) 1993 - 1999 by Stephen O. Lidie.  All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the same terms as Perl itself.
@@ -346,7 +346,7 @@ sub evap_fin {
     
     use File::Basename;
     
-    my($m, $p, $required, $type, $list, $def, $rt, $def, $element, $is_string,
+    my($m, $p, $required, $type, $list, $rt, $def, $element, $is_string,
        $pager, $do_page);
 
     # Define Help Hooks text as required.
@@ -1326,9 +1326,12 @@ Stephen.O.Lidie@Lehigh.EDU
      programs.  Primarily for users of EvaP(), can be used by other codes
      as well.
 
+ Stephen.O.Lidie@Lehigh.EDU 99/04/03 (PDT version 2.0)  Version 2.3.4
+   . Update Makefile.PL for ActiveState, fix a -w message found by 5.005_03.
+
 =head1 COPYRIGHT
 
-Copyright (C) 1993 - 1998 Stephen O. Lidie. All rights reserved.
+Copyright (C) 1993 - 1999 Stephen O. Lidie. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

@@ -10,7 +10,7 @@
 #
 # Stephen.O.Lidie@Lehigh.EDU
 #
-# Copyright (C) 1995 - 1998.  Stephen O. Lidie.
+# Copyright (C) 1995 - 1999.  Stephen O. Lidie.
 #
 
 use Config;
@@ -29,7 +29,7 @@ sub process_command_line_widget;
 
 $genPerlTk_aux_files = "$Config{installsitelib}/Getopt"; # other files
 chop($genPerlTk_date = `date`);	# creation date
-$genPerlTk_version = '2.3.3';	# version (same as Evaluate Parameters)
+$genPerlTk_version = '2.3.4';	# version (same as Evaluate Parameters)
 
 sub evap_PDT_error {
 

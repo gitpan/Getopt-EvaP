@@ -653,6 +653,9 @@ The button now changes to ');
 
 98/07/26, version 2.3.3.
   . Update for Perl 5.005 and Tk 800.008.
+
+99/04/03, version 2.3.4.
+  . Update for Perl 5.005_03 and Tk 800.013.
 ');
 
 ####### New section #######
