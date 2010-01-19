@@ -1,8 +1,8 @@
-$Getopt::EvaP::VERSION |= '2.3.5';
+$Getopt::EvaP::VERSION |= '2.3.6';
 
 package Getopt::EvaP; 
 
-# EvaP.pm - Evaluate Parameters 2.3.5 for Perl (the getopt et.al. replacement)
+# EvaP.pm - Evaluate Parameters for Perl (the getopt et.al. replacement)
 #
 # Stephen.O.Lidie@Lehigh.EDU, 94/10/28
 #
@@ -16,7 +16,7 @@ package Getopt::EvaP;
 #
 # Stephen O. Lidie, Lehigh University Computing Center.
 #
-# Copyright (C) 1993 - 1999 by Stephen O. Lidie.  All rights reserved.
+# Copyright (C) 1993 - 2010 by Stephen O. Lidie.  All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the same terms as Perl itself.
@@ -659,7 +659,53 @@ sub evap_set_value {
     if ($list and $v =~ /^\(+.*\)+$/) { # check for list
 	@values = eval "$v"; # let Perl do the walking
     } else {
-	$v =~ s/["|'](.*)["|']/$1/; # remove any bounding superfluous quotes
+
+# Original line
+# $v =~ s/["|'](.*)["|']/$1/s; # remove any bounding superfluous quotes 
+
+##########################################################################
+# Avner Moshkovitz changed (on 29 Apr 2009):
+# ^\s* to force the leading quotes to be in the beginning of the string
+# \s$ to force the trailing quotes to be in the end of the string
+# /s as a substitution option to match only at the end of the string
+# rather then at the end of the line
+#
+# /s without /m will force ``^'' to match only at the beginning of the 
+# string and ``$'' to match only at the end (or just before a newline at the end) 
+# of the string
+##########################################################################
+
+# The need came when ingesting a string with multiple lines, such as the 
+# -analyzers argument in the example below:
+#
+# /opt/cvi/SENSNET/lib/ExpLhlSensorActivityEvaluator.pl -v -minSensorActivityTime 4 -analyzers '<?xml version="1.0" encoding="UTF-8"?>
+# <analyzers groups="normal">
+#     <!-- The config for a set of analyzers. -->
+#     <nbOfAnalyzers groups="normal">
+#       2
+#     </nbOfAnalyzers>
+# </analyzers>'
+#
+# In this case the leading eand trailing quotes were already removed by perl before even calling the
+# EvaP module, as shown below:
+#
+# Cmd line params: -v -minSensorActivityTime 4 -analyzers <?xml version="1.0" encoding="UTF-8"?>
+# <analyzers groups="normal">
+#     <!-- The config for a set of analyzers. -->
+#     <nbOfAnalyzers groups="normal">
+#       2
+#     </nbOfAnalyzers>
+# </analyzers>
+#
+# Before the change the first double quotes in the first line (i.e. the double quotes "1.0 ... -8" )
+# where removed resulting in the next line:
+# version="1.0" encoding="UTF-8"?
+# After the change there is no change in the string and the quotes are not deleted
+
+
+$v =~ s/^\s*["|'](.*)["|']\s*$/$1/s; # remove any bounding superfluous quotes
+
+
 	@values = $v;		# a simple scalar	
     } # ifend initialize list of values
 
@@ -1330,9 +1376,13 @@ Stephen.O.Lidie@Lehigh.EDU
  Stephen.O.Lidie@Lehigh.EDU 99/04/03 (PDT version 2.0)  Version 2.3.5
    . Update Makefile.PL for ActiveState, fix a -w message found by 5.005_03.
 
+ sol0@lehigh.edu 2010/01/19 (PDT version 2.0)  Version 2.3.6
+   . Patch by Avner Moshkovitz to handle embedded quotes and spaces in string
+     options.
+
 =head1 COPYRIGHT
 
-Copyright (C) 1993 - 1999 Stephen O. Lidie. All rights reserved.
+Copyright (C) 1993 - 2010 Stephen O. Lidie. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
