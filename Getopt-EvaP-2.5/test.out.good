@@ -3,7 +3,7 @@ Usage: test.pl -mui [ -h -v -c -sf -iofco -o -q -d -t] [file(s)]
 
 Parameters:
 
--help, h, usage_help, full_help: Display Command Information
+-help, h, usage-help, full-help: Display Command Information
 -verbose, v: switch
 -command, c: string = D_SAMPLE_COMMAND, "ps -el"
 -scale_factor, sf: real = 1
@@ -24,14 +24,14 @@ sample
 	Examples:
 
 	  sample
-	  sample -usage_help
+	  sample -usage-help
 	  sample -h
-	  sample -full_help
+	  sample -full-help
           sample -mui 1234
 
 Parameters:
 
--help, h, usage_help, full_help: Display Command Information
+-help, h, usage-help, full-help: Display Command Information
 -verbose, v: switch
 -command, c: string = D_SAMPLE_COMMAND, "ps -el"
 -scale_factor, sf: real = 1
@@ -46,8 +46,6 @@ Parameters:
 
 Command Source:  test.pl
 
-
-
 sample
 
 	A sample program demonstrating typical Evaluate Parameters
@@ -56,20 +54,17 @@ sample
 	Examples:
 
 	  sample
-	  sample -usage_help
+	  sample -usage-help
 	  sample -h
-	  sample -full_help
+	  sample -full-help
           sample -mui 1234
 
 Parameters:
 
--help, h, usage_help, full_help: Display Command Information
+-help, h, usage-help, full-help: Display Command Information
 
-	Display information about this command, which includes
-	a command description with examples, plus a synopsis of
-	the command line parameters.  If you specify -full_help
-	rather than -help complete parameter help is displayed
-	if it's available.
+    Display information about this command, which includes a command description with examples, as well as a synopsis of the
+    command line parameters. If you specify -full-help rather than -help complete parameter help is displayed if it's available.
 
 -verbose, v: switch
 

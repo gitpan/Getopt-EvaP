@@ -1,4 +1,4 @@
-$Getopt::EvaP::VERSION |= '2.3.6.2';
+$Getopt::EvaP::VERSION |= '2.5';
 
 package Getopt::EvaP; 
 
@@ -11,12 +11,12 @@ package Getopt::EvaP;
 # CLP$EVALUATE_PARAMETERS for the NOS/VE operating system, although none
 # approach the richness of CDC's implementation.
 #
-# Availability is via anonymous FTP from ftp.Lehigh.EDU (128.180.1.4) in the
-# directory pub/evap/evap-2.x.
+# Availability is via anonymous FTP from ftp.Lehigh.EDU in the directory
+# pub/evap/evap-2.x.
 #
 # Stephen O. Lidie, Lehigh University Computing Center.
 #
-# Copyright (C) 1993 - 2010 by Stephen O. Lidie.  All rights reserved.
+# Copyright (C) 1993 - 2013 by Stephen O. Lidie.  All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the same terms as Perl itself.
@@ -27,7 +27,7 @@ package Getopt::EvaP;
 
 require 5.002;
 use subs qw/evap_fin evap_parse_command_line evap_parse_PDT evap_PDT_error
-    evap_set_value evap_setup_for_evap/;
+    evap_set_value/;
 use strict qw/refs subs/;
 use Exporter;
 @ISA = qw/Exporter/;
@@ -42,7 +42,6 @@ sub evap {			# Parameter Description Table, Message Module
     my($ref_PDT, $ref_MM, $ref_Opt) = @_;
     
     $evap_DOS = 0 unless defined $evap_DOS; # 1 iff MS-DOS, else Unix
-    $message_modules = "./libevapmm.a";
 
     local($pdt_reg_exp1) = '^(.)(.)(.?)$';
     local($pdt_reg_exp2) = '^TRUE$|^YES$|^ON$|^1$';
@@ -178,8 +177,7 @@ sub evap_parse_PDT {
     } # forend OPTIONS
 
     if ($error) {
-        print STDERR "Read the `man' page \"EvaP.pm\" for details on PDT " .
-            "syntax.\n";
+        print STDERR "Read the `man' page \"EvaP.pm\" for details on PDT syntax.\n";
         exit 1;
     }
 
@@ -199,8 +197,8 @@ sub evap_parse_command_line {
 	$option = shift @ARGV;	# get next command line parameter
 	$value = undef;		# assume no value
 	
-	$full_help = 1 if $option =~ /^-(full_help|\Q???\E)$/;
-	$usage_help = 1 if $option =~ /^-(usage_help|\Q??\E)$/;
+	$full_help = 1 if $option =~ /^-(full-help|\Q???\E)$/;
+	$usage_help = 1 if $option =~ /^-(usage-help|\Q??\E)$/;
 	$option = '-help' if $full_help or $usage_help or
 	    $option  =~ /^-(\Q?\E)$/;
 	
@@ -255,31 +253,27 @@ sub evap_parse_command_line {
 	    $value = 1;
 	} elsif ($type =~ /^i$/) { # integer
 	    if ($value !~ /^[+-]?[0-9]+$/)  {
-		print STDERR "Expecting integer reference, found \"$value\" " .
-                    "for parameter -$option.\n";
+		print STDERR "Expecting integer reference, found \"$value\" for parameter -$option.\n";
 		$error++;
 		undef $value;
 	    }
 	} elsif ($type =~ /^r$/) { # real number, int is also ok
 	    if ($value !~ /^\s*[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?\s*$/) {
-		print STDERR "Expecting real reference, found \"$value\" " .
-                    "for parameter -$option.\n";
+		print STDERR "Expecting real reference, found \"$value\" for parameter -$option.\n";
 		$error++;
 		undef $value;
 	    }
 	} elsif ($type =~ /^s$|^n$|^a$/) { # string or name or application
 	} elsif ($type =~ /^f$/) { # file
 	    if (length $value > 255) {
-		print STDERR "Expecting file reference, found \"$value\" " .
-                    "for parameter -$option.\n";
+		print STDERR "Expecting file reference, found \"$value\" for parameter -$option.\n";
 		$error++;
 		undef $value;
 	    }
 	} elsif ($type =~ /^b$/) { # boolean
 	    $value =~ tr/a-z/A-Z/;
 	    if ($value !~ /$pdt_reg_exp2|$pdt_reg_exp3/i) {
-		print STDERR "Expecting boolean reference, found " .
-                    "\"$value\" for parameter -$option.\n";
+		print STDERR "Expecting boolean reference, found \"$value\" for parameter -$option.\n";
 		$error++;
 		undef $value;
             }
@@ -297,8 +291,7 @@ sub evap_parse_command_line {
 		for ($i = 0; $i <= $#keys; $i++) {
 		    if ($value eq substr $keys[$i], 0, $length) {
 			if (defined $found) {
-			    print STDERR "Ambiguous keyword for parameter " .
-                                "-$option: $value.\n";
+			    print STDERR "Ambiguous keyword for parameter -$option: $value.\n";
 			    $error++;
 			    last; # for
 			}
@@ -308,8 +301,7 @@ sub evap_parse_command_line {
 		$value = defined( $found ) ? $found : $value;
 	    } # ifend
 	    if (not defined $found) {
-		print STDERR "\"$value\" is not a valid value for the " .
-                    "parameter -$option.\n";
+		print STDERR "\"$value\" is not a valid value for the parameter -$option.\n";
 		$error++;
 		undef $value;
 	    }
@@ -333,7 +325,7 @@ sub evap_fin {
 
     # Finish up Evaluate Parameters processing:
     #
-    # If -usage_help, -help or -full_help was requested then do it and exit.
+    # If -usage-help, -help or -full-help was requested then do it and exit.
     # Else,
     #   
     #  . Store program name in `help' variables.
@@ -410,7 +402,7 @@ sub evap_fin {
 	$pager = '>-' if $^O eq 'MacOS';
 	open(PAGER, "$pager") or warn "'$pager' open failed:  $!";
 	
-	print PAGER "Command Source:  $0\n\n\n\n" if $full_help;
+	print PAGER "Command Source:  $0\n\n" if $full_help;
 
 	# Print the Message Module text and save any full help.  The key is the
 	# parameter name and the value is a list of strings with the newline as
@@ -471,14 +463,11 @@ sub evap_fin {
 	    if ($full_help) {print PAGER "\n";}
 	    
 	    if ($p =~ /^help$/) {
-		print PAGER "-$p, $P_ALIAS{$p}, usage_help, full_help: Display Command Information\n";
+		print PAGER "-$p, $P_ALIAS{$p}, usage-help, full-help: Display Command Information\n";
                 if ($full_help) {
          	    print PAGER <<"end_of_DISCI";
-\n\tDisplay information about this command, which includes
-\ta command description with examples, plus a synopsis of
-\tthe command line parameters.  If you specify -full_help
-\trather than -help complete parameter help is displayed
-\tif it's available.
+\n    Display information about this command, which includes a command description with examples, as well as a synopsis of the
+    command line parameters. If you specify -full-help rather than -help complete parameter help is displayed if it's available.
 end_of_DISCI
 	        }
 		next ALL_PARAMETERS;
@@ -490,12 +479,10 @@ end_of_DISCI
 	    $is_string = ($type =~ /^string$/);
 	    
             my $set = $P_SET{$p} ? "$P_SET{$p} " : '';
-	    print PAGER "-$p, $P_ALIAS{$p}: ", $list ? "list of " : '',
-                 "$set$type"; 
+	    print PAGER "-$p, $P_ALIAS{$p}: ", $list ? "list of " : '', "$set$type"; 
             if (defined($P_SET{$p}) and $P_SET{$p} > 1) {print PAGER 's'}
 	    
-	    print PAGER " ", join(', ', split(' ', $P_VALID_VALUES{$p})), 
-                ", keyend" if $type =~ /^key$/;
+	    print PAGER " ", join(', ', split(' ', $P_VALID_VALUES{$p})), ", keyend" if $type =~ /^key$/;
 	    
 	    my($ref);
             if (defined $lref_Opt) {
@@ -517,8 +504,7 @@ end_of_DISCI
                 } else {	# defined (either $optional or $required), display the default value(s)
                     if ($list) {
 			print PAGER $P_ENV{$p} ? " = $P_ENV{$p}, " : " = ";
-			print PAGER $is_string ? "(\"" : "(", $is_string ? join('", "', @{$ref}) : join(', ', @{$ref}),
-			      $is_string ? "\")\n" : ")\n";
+			print PAGER $is_string ? "(\"" : "(", $is_string ? join('", "', @{$ref}) : join(', ', @{$ref}), $is_string ? "\")\n" : ")\n";
                     } else {	# not 'list of'
 			print PAGER $P_ENV{$p} ? " = $P_ENV{$p}, " : " = ";
 			print PAGER $is_string ? "\"" : "", ${$ref}, $is_string ? "\"\n" : "\n";
@@ -594,8 +580,7 @@ end_of_DISCI
         $error++;
     }
     
-    print STDERR "Type $0 -h for command line parameter " .
-        "information.\n" if $error;
+    print STDERR "Type $0 -h for command line parameter information.\n" if $error;
 
     exit 1 if $error and not $evap_embed;
     if (not $error) {
@@ -793,11 +778,19 @@ sub evap_pac {
     }
 
     print STDOUT "$prompt";
+    my $eofCount = $ENV{IGNOREEOF};
+    $eofCount = 0 unless defined $eofCount;
 
     no strict 'refs';
   GET_USER_INPUT:
-    while (<$inp>) {
-
+    while ( 1 ) {
+	$_ = <$inp>;
+	if ( not defined $_ ) {
+	    $eofCount--;
+	    last if $eofCount < 0;
+	    print "\n";
+	    next GET_USER_INPUT;
+	}
 	next GET_USER_INPUT if /^\s*$/;	# ignore empty input lines
 
 	if (/^\s*!(.+)/) {
@@ -805,15 +798,17 @@ sub evap_pac {
 	}
 
         ($0, $args) = /\s*(\S+)\s*(.*)/;
+	if ( $0 =~ m/^help|h$/i ) {
+	     $0 = 'disac';
+	     $args = '-do f';
+	}
 	if (defined $long{$0}) {
 	    $proc = $long{$0};
 	} elsif (defined $alias{$0}) {
 	    $proc = $alias{$0};
 	} else  {
             print STDERR <<"end_of_ERROR";
-Error - unknown command `$0'.  Type `disac -do f' for a
-list of valid application commands.  You can then ...\n
-Type `xyzzy -h' for help on application command `xyzzy'.
+Error - unknown command '$0'.  Type 'help' for a list of valid application commands.  You can then type 'xyzzy -h' for help on application command 'xyzzy'.
 end_of_ERROR
 	    next GET_USER_INPUT;
         }
@@ -824,8 +819,14 @@ end_of_ERROR
 	    @ARGV = &shellwords($args);
 	}
 
-        eval "&$proc;";		# call the evap/user procedure
-	print STDERR $EVAL_ERROR if $EVAL_ERROR;
+	if ( ($proc =~ m/^evap_(.*)_proc/) or exists &$proc ) {
+	    eval "&$proc;";		# call the evap/user procedure
+	    print STDERR $EVAL_ERROR if $EVAL_ERROR;
+	} else {
+	    print STDERR "Procedure '$proc' does not exist in your application and cannot be called.\n";
+	}
+
+	@ARGV = ();
 
     } # whilend GET_USER_INPUT
     continue { # while GET_USER_INPUT
@@ -843,15 +844,28 @@ sub evap_bang_proc {
     my $cmd = $ARGV[0];
 
     if ($cmd ne '') {
-	evap_setup_for_evap 'bang' unless defined @bang_proc_PDT;
+	$bang_proc_MM = <<"END";
+!
+
+    Bang! Issue one or more commands to the shell.  If the SHELL environment variable is not defined or is empty, then /bin/sh is used.
+
+    Examples:
+
+      !date
+      !del *.o; ls -al
+END
+        $bang_proc_PDT = <<"END";
+PDT !
+PDTEND optional_file_list
+END
 	$evap_Help_Hooks{'P_HHUOFL'} = " Command(s)\n";
 	$evap_Help_Hooks{'P_HHBOFL'} = "\nA list of shell Commands.\n\n";
-	my $junk = \@bang_proc_MM; # supress -w warning
+	@bang_proc_MM = split /\n/, $bang_proc_MM;
+	@bang_proc_PDT = split /\n/, $bang_proc_PDT;
 	if (EvaP(\@bang_proc_PDT, \@bang_proc_MM) != 1) {return;}
 	system "$shell -c '$cmd'";
     } else {
-	print STDOUT "Starting a new `$shell' shell; use `exit' to return " .
-	    "to this application.\n";
+	print STDOUT "Starting a new `$shell' shell; use `exit' to return to this application.\n";
 	system $shell;
     }
 
@@ -863,11 +877,41 @@ sub evap_disac_proc {
 
     my(%commands) = @_;
     my(@brief, @full, $name, $long, $alias);
+	$disac_proc_MM = <<"END";
+display_application_commands, display_application_command, disac
 
-    evap_setup_for_evap 'disac' unless defined @disac_proc_PDT;
-    my $junk = \@disac_proc_MM;	# supress -w warning
+    Displays a list of legal commands for this application.
+
+    Examples:
+
+      disac              # the `brief' display
+      disac -do f        # the `full' display
+.display_option
+    Specifies the level of output desired.
+.output
+    Specifies the name of the file to write information to.
+END
+        $disac_proc_PDT = <<"END";
+PDT disac
+  display_option, do: key brief, full, keyend = brief
+  output, o: file = stdout
+PDTEND no_file_list
+END
+    @disac_proc_MM = split /\n/, $disac_proc_MM;
+    @disac_proc_PDT = split /\n/, $disac_proc_PDT;
     if (EvaP(\@disac_proc_PDT, \@disac_proc_MM) != 1) {return;}
 
+    my $len = 1;
+    foreach $name (keys %commands) {
+        if ($name =~ /\|/) {
+            ($long, $alias) = ($name =~ /(.*)\|(.*)/);
+        } else {
+	    $long = $name;
+            $alias = '';
+	}
+	my $l = length $long;
+	$len = $l if $l > $len;
+    }
     foreach $name (keys %commands) {
         if ($name =~ /\|/) {
             ($long, $alias) = ($name =~ /(.*)\|(.*)/);
@@ -876,13 +920,12 @@ sub evap_disac_proc {
             $alias = '';
 	}
         push @brief, $long;
-        push @full, ($alias ne '') ? "$long, $alias" : "$long";
+        push @full, ($alias ne '') ? sprintf("%-${len}s, %s", $long, $alias) : "$long";
     }
 
     open H, ">$Options{'output'}";
     if ($Options{'display_option'} eq 'full') {
-        print H "\nFor help on any application command (or alias) use the -h switch.  For example,\n";
-        print H "try `disac -h' for help on `display_application_commands'.\n";
+        print H "\nFor help on any application command (or command alias) use the -h switch.  For example, try 'disac -h' for help on 'display_application_commands'.\n";
         print H "\nCommand and alias list for this application:\n\n";
 	print H "  ", join("\n  ", sort(@full)), "\n";
     } else {
@@ -892,21 +935,21 @@ sub evap_disac_proc {
 
 } # end evap_disac_proc
 
-sub evap_setup_for_evap {
-    
-    # Initialize evap_pac's builtin commands' PDT/MM variables.
-
-    my($command) = @_;
-
-    open IN, "ar p $message_modules ${command}_pdt|";
-    eval "\@${command}_proc_PDT = <IN>;";
-    close IN;
-
-    open IN, "ar p $message_modules ${command}.mm|";
-    eval "\@${command}_proc_MM = grep \$@ = s/\n\$//, <IN>;";
-    close IN;
-
-} # end evap_setup_for_evap
+#sub evap_setup_for_evap {
+#    
+#    # Initialize evap_pac's builtin commands' PDT/MM variables.
+#
+#    my($command) = @_;
+#
+#    open IN, "ar p $message_modules ${command}_pdt|";
+#    eval "\@${command}_proc_PDT = <IN>;";
+#    close IN;
+#
+#    open IN, "ar p $message_modules ${command}.mm|";
+#    eval "\@${command}_proc_MM = grep \$@ = s/\n\$//, <IN>;";
+#    close IN;
+#
+#} # end evap_setup_for_evap
 
 1;
 __END__
@@ -1025,7 +1068,7 @@ series of help text messages can be specified for individual command
 line parameters.  In the following sample program all the parameters
 have this additional text which describes that parameter's type.  The
 leadin character is a dot in column one followed by the full spelling
-of the command line parameter.  Use I<-full_help> rather than I<-help>
+of the command line parameter.  Use I<-full-help> rather than I<-help>
 to see this supplemental information.  This sample program illustrates
 the various types and how to use B<EvaP()>.  The I<key> type is a
 special type that enumerates valid values for the command line
@@ -1107,9 +1150,9 @@ display_option (do) parameter of the display_command_information
         Examples:
 
           sample
-          sample -usage_help
+          sample -usage-help
           sample -help
-          sample -full_help
+          sample -full-help
           sample -mui 1234
  .verbose
         A switch type parameter emulates a typical standalone
@@ -1287,7 +1330,7 @@ parameter I<maximum_byte_count> is I<maxbc>.
 =item *
 
 There are no abbreviations for the parameters
-I<usage_help> and I<full_help>; I do not want to
+I<usage-help> and I<full-help>; I do not want to
 prevent I<uh> and I<fh> from being used as valid
 command line parameters.
 
@@ -1380,9 +1423,20 @@ Stephen.O.Lidie@Lehigh.EDU
    . Patch by Avner Moshkovitz to handle embedded quotes and spaces in string
      options.
 
+ sol0@lehigh.edu 2013/04/06 (PDT version 2.0)  Version 2.5
+   . Change -full_help and -usage_help to -full-help and -usage-help (change
+     underscore to dash).
+   . Evap_PAC obeys IGNOREEOF.
+   . Embed the disac and ! MMs and PDTs in the code.
+   . Messages now use a longer output line widths.
+   . Use fewer empty lines for -full-help output.
+   . Allow "help" and "h" to stand for "disac -do f".
+   . Evap_PAC now ensures that an application command exists.
+   . disac now determines length of longest command for a tidy column display.
+
 =head1 COPYRIGHT
 
-Copyright (C) 1993 - 2010 Stephen O. Lidie. All rights reserved.
+Copyright (C) 1993 - 2013 Stephen O. Lidie. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

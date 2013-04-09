@@ -1,4 +1,7 @@
-#!./perl -w
+#!/usr/local/bin/perl -w
+
+eval 'exec /usr/local/bin/perl -w -S $0 ${1+"$@"}'
+    if 0; # not running under some shell
 #
 # generate_PerlTk_program: create a Perl/Tk 8.x X11 GUI wrapper program for any
 # command line application.  
@@ -10,7 +13,7 @@
 #
 # Stephen.O.Lidie@Lehigh.EDU
 #
-# Copyright (C) 1995 - 1999.  Stephen O. Lidie.
+# Copyright (C) 1995 - 2013.  Stephen O. Lidie.
 #
 
 use Config;
@@ -29,7 +32,7 @@ sub process_command_line_widget;
 
 $genPerlTk_aux_files = "$Config{installsitelib}/Getopt"; # other files
 chop($genPerlTk_date = `date`);	# creation date
-$genPerlTk_version = '2.3.5';	# version (same as Evaluate Parameters)
+$genPerlTk_version = '2.5';	# version (same as Evaluate Parameters)
 
 sub evap_PDT_error {
 

@@ -28,9 +28,9 @@ sample
 	Examples:
 
 	  sample
-	  sample -usage_help
+	  sample -usage-help
 	  sample -h
-	  sample -full_help
+	  sample -full-help
           sample -mui 1234
 .verbose
         A 'switch' type parameter emulates a typical standalone
@@ -134,11 +134,11 @@ open(STDERR, '>test.err') or die $!;
 open(STDOUT, '>test.out') or die $!;
 @ARGV = qw/-sf not-a-float -mui 1bc -iofco 2 -q no-queue -unknown -comm/;
 EvaP \@PDT, \@MM;      # evaluate parameters
-@ARGV = (qw/-sf 1 -usage_help/);
+@ARGV = (qw/-sf 1 -usage-help/);
 EvaP \@PDT, \@MM;      # evaluate parameters
 @ARGV = (qw/-sf 1 -help/);
 EvaP \@PDT, \@MM;      # evaluate parameters
-@ARGV = (qw/-sf 1 -full_help/);
+@ARGV = (qw/-sf 1 -full-help/);
 EvaP \@PDT, \@MM;      # evaluate parameters
 close STDERR;
 close STDOUT;

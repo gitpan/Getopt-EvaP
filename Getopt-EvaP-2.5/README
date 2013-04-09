@@ -50,9 +50,16 @@ Here's a sample PDT:
 			What's New In Version 2.3.6?
 
  . A patch from Avner Moshkovitz to handle spaces and quotes embeded in string
-   options. 2010/01/19
+      
+
+			What's New In Version 2.5?
+
+ . Essentially just a refresh:  bug fixes for EvaP_PAC, use dashes rather
+   than underscores for -full-help and -usage-help.  See the change log
+   in EvaP.pm.
+
  
-Steve Lidie, Lehigh University Computing Center, 99/04/08.
+Steve Lidie, Lehigh University Computing Center, 2013/04/09.
 
 sol0@Lehigh.EDU
 
@@ -74,7 +81,7 @@ make install (as root)
 Here's the Announce file from the complete distribution:
 
 
-		 Evaluate Parameters 2.3 for C, Perl and Tcl
+		 Evaluate Parameters 2.5 for C, Perl and Tcl
 
 
     Evaluate Parameters, designed as a replacement for the getopt family of
@@ -194,7 +201,7 @@ Perl and Tcl programs:
 				Availability
 
 All the implementations of Evaluate Parameters are available via anonymous FTP
-from ftp.Lehigh.EDU (128.180.1.4).  Look in the pub/evap/evap-2.x directory
+from ftp.Lehigh.EDU.  Look in the pub/evap/evap-2.x directory
 for the latest compressed tar file.       
 
 
@@ -210,3 +217,4 @@ Stephen O. Lidie
 Lehigh University Computing Center
 
 lusol@Lehigh.EDU, 97/01/12
+sol0@lehigh.edu, 2012.04.09
