@@ -1,4 +1,4 @@
-$Getopt::EvaP::VERSION |= '2.5';
+$Getopt::EvaP::VERSION |= '2.5.1';
 
 package Getopt::EvaP; 
 
