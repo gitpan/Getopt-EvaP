@@ -1,4 +1,4 @@
-$Getopt::EvaP::VERSION |= '2.5.1';
+$Getopt::EvaP::VERSION |= '2.6';
 
 package Getopt::EvaP; 
 
@@ -743,12 +743,26 @@ $v =~ s/^\s*["|'](.*)["|']\s*$/$1/s; # remove any bounding superfluous quotes
 	
 } # end evap_set_value
 
+sub evap_isatty {
+
+    my $in = shift;
+    my $s = -t $in;
+    return $s;
+
+}
+
 sub evap_pac {
 
-    # Process Application Commands - an application command can be envoked by 
-    # entering either its full spelling or the alias.
+    eval {
+	require Term::ReadLine;
+    };
+    my $noReadLine = $@;
+
+    # Process Application Commands - an application command can be envoked by entering either its full spelling or the alias.
 
     my($prompt, $I, %cmds) = @_;
+
+    $noReadLine = 1 if not evap_isatty( $I );
 
     my($proc, $args, %long, %alias, $name, $long, $alias);
     my $pkg = (caller)[0];
@@ -777,14 +791,24 @@ sub evap_pac {
 	}
     }
 
-    print STDOUT "$prompt";
+    my ( $term, $out );
+    if ( $noReadLine ) {
+	print STDOUT "$prompt";
+    } else {
+	$term = Term::ReadLine->new( $prompt );
+	$OUT = $term->OUT || \*STDOUT;
+    }
     my $eofCount = $ENV{IGNOREEOF};
     $eofCount = 0 unless defined $eofCount;
 
     no strict 'refs';
   GET_USER_INPUT:
     while ( 1 ) {
-	$_ = <$inp>;
+	if ( $noReadLine ) {
+	    $_ = <$inp>;
+	} else {
+	    $_ = $term->readline( $prompt );
+	}
 	if ( not defined $_ ) {
 	    $eofCount--;
 	    last if $eofCount < 0;
@@ -798,7 +822,7 @@ sub evap_pac {
 	}
 
         ($0, $args) = /\s*(\S+)\s*(.*)/;
-	if ( $0 =~ m/^help|h$/i ) {
+	if ( $0 =~ m/^help$|^h$/i ) {
 	     $0 = 'disac';
 	     $args = '-do f';
 	}
@@ -830,7 +854,7 @@ end_of_ERROR
 
     } # whilend GET_USER_INPUT
     continue { # while GET_USER_INPUT
-        print STDOUT "$prompt";
+        print STDOUT "$prompt" if $noReadLine;
     } # continuend
     print STDOUT "\n" unless $prompt eq "";
 
@@ -1428,11 +1452,15 @@ Stephen.O.Lidie@Lehigh.EDU
      underscore to dash).
    . Evap_PAC obeys IGNOREEOF.
    . Embed the disac and ! MMs and PDTs in the code.
-   . Messages now use a longer output line widths.
+   . Messages now use a longer output line width.
    . Use fewer empty lines for -full-help output.
    . Allow "help" and "h" to stand for "disac -do f".
    . Evap_PAC now ensures that an application command exists.
    . disac now determines length of longest command for a tidy column display.
+
+ sol0@lehigh.edu 2013/05/14 (PDT version 2.0)  Version 2.6
+   . Add Term::ReadLine support in EvaP_PAC: uses readline() automatically if the 
+     module is installed and input is coming from a terminal.
 
 =head1 COPYRIGHT
 

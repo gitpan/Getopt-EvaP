@@ -57,9 +57,14 @@ Here's a sample PDT:
  . Essentially just a refresh:  bug fixes for EvaP_PAC, use dashes rather
    than underscores for -full-help and -usage-help.  See the change log
    in EvaP.pm.
+      
+
+			What's New In Version 2.6?
+
+ . Use Term::ReadLine in EvaP_PAC if possible.
 
  
-Steve Lidie, Lehigh University Computing Center, 2013/04/09.
+Steve Lidie, Lehigh University Computing Center, 2013/05/14.
 
 sol0@Lehigh.EDU
 
@@ -75,7 +80,7 @@ make install (as root)
 				    Usage
 
  . perldoc Getopt::EvaP
- . genpTk -full_help
+ . genpTk -full-help
 
 
 Here's the Announce file from the complete distribution:
