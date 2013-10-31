@@ -62,9 +62,14 @@ Here's a sample PDT:
 			What's New In Version 2.6?
 
  . Use Term::ReadLine in EvaP_PAC if possible.
+      
+
+			What's New In Version 2.7?
+
+ . Replace deprecated &shellwords with Text::ParseWords::quotewords.
 
  
-Steve Lidie, Lehigh University Computing Center, 2013/05/14.
+Steve Lidie, Lehigh University Computing Center, 2013/10/31.
 
 sol0@Lehigh.EDU
 

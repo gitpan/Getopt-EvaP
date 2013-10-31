@@ -1,4 +1,4 @@
-$Getopt::EvaP::VERSION |= '2.6';
+$Getopt::EvaP::VERSION |= '2.7';
 
 package Getopt::EvaP; 
 
@@ -16,7 +16,7 @@ package Getopt::EvaP;
 #
 # Stephen O. Lidie, Lehigh University Computing Center.
 #
-# Copyright (C) 1993 - 2013 by Stephen O. Lidie.  All rights reserved.
+# Copyright (C) 1993 - 2014 by Stephen O. Lidie.  All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the same terms as Perl itself.
@@ -26,6 +26,7 @@ package Getopt::EvaP;
 # evap.tcl(2) and evap_pac(2).
 
 require 5.002;
+use Text::ParseWords;
 use subs qw/evap_fin evap_parse_command_line evap_parse_PDT evap_PDT_error
     evap_set_value/;
 use strict qw/refs subs/;
@@ -768,8 +769,6 @@ sub evap_pac {
     my $pkg = (caller)[0];
     my $inp = ref($I) ? $I : "${pkg}::${I}";
 
-    require "shellwords.pl";
-
     $evap_embed = 1;		# enable embedding
     $shell = (defined $ENV{'SHELL'} and $ENV{'SHELL'} ne '') ? 
         $ENV{'SHELL'} : '/bin/sh';
@@ -840,7 +839,7 @@ end_of_ERROR
 	if ($0 eq '!') {
 	    @ARGV = $args;
 	} else {
-	    @ARGV = &shellwords($args);
+	    @ARGV = Text::ParseWords::quotewords( '\s+', 0, $args );
 	}
 
 	if ( ($proc =~ m/^evap_(.*)_proc/) or exists &$proc ) {
@@ -1462,9 +1461,12 @@ Stephen.O.Lidie@Lehigh.EDU
    . Add Term::ReadLine support in EvaP_PAC: uses readline() automatically if the 
      module is installed and input is coming from a terminal.
 
+ sol0@lehigh.edu 2013/10/22 (PDT version 2.0)  Version 2.7
+   . shellwords.pl is deprecated, use Text::ParseWords instead.
+
 =head1 COPYRIGHT
 
-Copyright (C) 1993 - 2013 Stephen O. Lidie. All rights reserved.
+Copyright (C) 1993 - 2014 Stephen O. Lidie. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
