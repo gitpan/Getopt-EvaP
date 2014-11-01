@@ -67,9 +67,14 @@ Here's a sample PDT:
 			What's New In Version 2.7?
 
  . Replace deprecated &shellwords with Text::ParseWords::quotewords.
+      
+
+			What's New In Version 2.8?
+
+ . Fix 2 defined() warnings.
 
  
-Steve Lidie, Lehigh University Computing Center, 2013/10/31.
+Steve Lidie, Lehigh University Computing Center, 2014/11/01.
 
 sol0@Lehigh.EDU
 

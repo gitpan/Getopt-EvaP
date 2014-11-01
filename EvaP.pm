@@ -1,4 +1,4 @@
-$Getopt::EvaP::VERSION |= '2.7';
+$Getopt::EvaP::VERSION |= '2.8';
 
 package Getopt::EvaP; 
 
@@ -410,7 +410,7 @@ sub evap_fin {
 	# a separator.  If there is no Message Module or it's empty then 
 	# display an abbreviated usage message.
 	
-        if ($usage_help or not defined @{$lref_MM} or $#{$lref_MM} < 0) {
+        if ($usage_help or not @{$lref_MM} or $#{$lref_MM} < 0) {
 	    
 	    $basename = basename($0, "");
 	    print PAGER "\nUsage: ", $basename;
@@ -493,7 +493,7 @@ end_of_DISCI
                 $ref = "${pkg}::opt_${p}";
             }
 	    if ($list) {
-                $def = defined @{$ref} ? 1 : 0;
+                $def =  @{$ref} ? 1 : 0;
 	    } else {
                 $def = defined ${$ref} ? 1 : 0;
             }
@@ -1464,9 +1464,12 @@ Stephen.O.Lidie@Lehigh.EDU
  sol0@lehigh.edu 2013/10/22 (PDT version 2.0)  Version 2.7
    . shellwords.pl is deprecated, use Text::ParseWords instead.
 
+ sol0@lehigh.edu 2014/11/01 (PDT version 2.0)  Version 2.8
+   . fix 2 defined() warnings.
+
 =head1 COPYRIGHT
 
-Copyright (C) 1993 - 2014 Stephen O. Lidie. All rights reserved.
+Copyright (C) 1993 - 2015 Stephen O. Lidie. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

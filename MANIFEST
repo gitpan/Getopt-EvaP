@@ -18,3 +18,4 @@ GUI/woevap.ptk
 test.err
 test.out
 META.yml                                 Module meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)
